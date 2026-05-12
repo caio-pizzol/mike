@@ -9,3 +9,11 @@
 export function isSuperDocEnabled(): boolean {
     return process.env.NEXT_PUBLIC_SUPERDOC_ENABLED === "true";
 }
+
+/**
+ * Gates the unauthenticated /superdoc-demo route. Off by default so a
+ * fork or staging deploy never accidentally exposes it.
+ */
+export function isSuperDocDemoEnabled(): boolean {
+    return process.env.NEXT_PUBLIC_SUPERDOC_DEMO === "true";
+}
