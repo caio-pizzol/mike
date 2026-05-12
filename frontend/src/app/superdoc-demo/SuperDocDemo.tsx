@@ -200,13 +200,22 @@ function SuperDocDemoInner() {
 
             <div className="flex flex-1 overflow-hidden bg-gray-100">
                 <div className="flex flex-1 items-stretch justify-center overflow-hidden p-4">
-                    <div className="h-full w-full max-w-4xl overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+                    {/* Stock toolbar stays rendered so mode switches don't
+                        rebuild the editor (hideToolbar is in the rebuild
+                        dep array on @superdoc-dev/react). In View mode we
+                        hide the toolbar container via CSS instead. */}
+                    <div
+                        className={`h-full w-full max-w-4xl overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm ${
+                            mode === "viewing"
+                                ? "[&_.superdoc-toolbar-container]:hidden"
+                                : ""
+                        }`}
+                    >
                         <SuperDocEditor
                             document={SAMPLE_URL}
                             documentMode={mode}
                             modules={MODULES}
                             telemetry={TELEMETRY}
-                            hideToolbar
                             disableContextMenu
                             contained
                             style={{ height: "100%" }}
