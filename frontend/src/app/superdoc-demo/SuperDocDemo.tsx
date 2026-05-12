@@ -17,7 +17,12 @@ const SAMPLE_URL = "/sample-review.docx";
 const SAMPLE_FILENAME = "Sample Service Agreement.docx";
 
 const MODULES = {
-    comments: false as const,
+    // Comments enabled (empty config = defaults) so SuperDoc renders
+    // the comment marker on commented text out of the box. The Mike
+    // toolbar's Comment button creates comments via the engine; without
+    // the module SuperDoc wouldn't paint any visible feedback. The
+    // built-in floating UI bubble is acceptable for the demo.
+    comments: {} as const,
     trackChanges: {
         visible: true as const,
         replacements: "paired" as const,

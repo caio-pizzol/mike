@@ -5,11 +5,16 @@ import {
     Bold,
     ChevronDown,
     Italic,
+    MessageSquarePlus,
     Redo2,
     Underline,
     Undo2,
 } from "lucide-react";
-import { useSuperDocCommand, useSuperDocUI } from "superdoc/ui/react";
+import {
+    useSuperDocCommand,
+    useSuperDocSelection,
+    useSuperDocUI,
+} from "superdoc/ui/react";
 
 // Curated short list. Keep it small — a long font picker pulls the
 // surface in a direction Mike's chrome doesn't go. The labels are the
@@ -55,7 +60,49 @@ export function MikeToolbar() {
             <Btn id="redo" title="Redo (⌘⇧Z)">
                 <Redo2 className="h-3.5 w-3.5" strokeWidth={2.5} />
             </Btn>
+            <Divider />
+            <CommentBtn />
         </div>
+    );
+}
+
+function CommentBtn() {
+    const ui = useSuperDocUI();
+    const selection = useSuperDocSelection();
+    const ready = !!ui;
+    const disabled = !ready || selection.empty || selection.target === null;
+    const title = disabled
+        ? "Select text to comment"
+        : "Comment on selection";
+
+    const handleClick = () => {
+        if (!ui) return;
+        // Capture selection BEFORE the prompt steals focus — otherwise
+        // the editor's live selection clears and createFromSelection
+        // sees a null target.
+        const capture = ui.selection.capture();
+        const text = window.prompt("Comment");
+        if (!text || !text.trim()) {
+            if (capture) ui.selection.restore(capture);
+            return;
+        }
+        if (capture) {
+            ui.comments.createFromCapture(capture, { text: text.trim() });
+        } else {
+            ui.comments.createFromSelection({ text: text.trim() });
+        }
+    };
+
+    return (
+        <button
+            type="button"
+            title={title}
+            disabled={disabled}
+            onClick={handleClick}
+            className="inline-flex h-7 w-7 items-center justify-center rounded-md text-gray-700 transition-colors hover:bg-gray-200 disabled:opacity-30"
+        >
+            <MessageSquarePlus className="h-3.5 w-3.5" strokeWidth={2.5} />
+        </button>
     );
 }
 
