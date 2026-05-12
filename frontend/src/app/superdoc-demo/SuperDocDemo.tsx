@@ -3,7 +3,9 @@
 import { useCallback, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { Check, Download, Loader2, Search } from "lucide-react";
+import { SuperDocUIProvider, useSetSuperDoc } from "superdoc/ui/react";
 import "@superdoc-dev/react/style.css";
+import { SuggestionsSidebar } from "./SuggestionsSidebar";
 
 const SuperDocEditor = dynamic(
     () => import("@superdoc-dev/react").then((m) => m.SuperDocEditor),
@@ -39,6 +41,15 @@ interface SuperDocLike {
 }
 
 export function SuperDocDemo() {
+    return (
+        <SuperDocUIProvider>
+            <SuperDocDemoInner />
+        </SuperDocUIProvider>
+    );
+}
+
+function SuperDocDemoInner() {
+    const setSuperDoc = useSetSuperDoc();
     const superdocRef = useRef<SuperDocLike | null>(null);
     const [mode, setMode] = useState<Mode>("viewing");
     const [query, setQuery] = useState("");
@@ -187,22 +198,30 @@ export function SuperDocDemo() {
                 </div>
             )}
 
-            <div className="flex-1 overflow-hidden bg-gray-100 p-4">
-                <div className="mx-auto h-full max-w-5xl overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-                    <SuperDocEditor
-                        document={SAMPLE_URL}
-                        documentMode={mode}
-                        modules={MODULES}
-                        telemetry={TELEMETRY}
-                        hideToolbar
-                        disableContextMenu
-                        contained
-                        style={{ height: "100%" }}
-                        onReady={({ superdoc }: { superdoc: unknown }) => {
-                            superdocRef.current = superdoc as SuperDocLike;
-                        }}
-                    />
+            <div className="flex flex-1 overflow-hidden bg-gray-100">
+                <div className="flex flex-1 items-stretch justify-center overflow-hidden p-4">
+                    <div className="h-full w-full max-w-4xl overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+                        <SuperDocEditor
+                            document={SAMPLE_URL}
+                            documentMode={mode}
+                            modules={MODULES}
+                            telemetry={TELEMETRY}
+                            hideToolbar
+                            disableContextMenu
+                            contained
+                            style={{ height: "100%" }}
+                            onReady={({
+                                superdoc,
+                            }: {
+                                superdoc: unknown;
+                            }) => {
+                                superdocRef.current = superdoc as SuperDocLike;
+                                setSuperDoc(superdoc);
+                            }}
+                        />
+                    </div>
                 </div>
+                <SuggestionsSidebar />
             </div>
         </div>
     );
