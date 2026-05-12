@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { Check, Download, Loader2, Search } from "lucide-react";
 import { SuperDocUIProvider, useSetSuperDoc } from "superdoc/ui/react";
 import "@superdoc-dev/react/style.css";
+import { MikeToolbar } from "./MikeToolbar";
 import { SuggestionsSidebar } from "./SuggestionsSidebar";
 
 const SuperDocEditor = dynamic(
@@ -204,30 +205,29 @@ function SuperDocDemoInner() {
                         rebuild the editor (hideToolbar is in the rebuild
                         dep array on @superdoc-dev/react). In View mode we
                         hide the toolbar container via CSS instead. */}
-                    <div
-                        className={`h-full w-full max-w-4xl overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm ${
-                            mode === "viewing"
-                                ? "[&_.superdoc-toolbar-container]:hidden"
-                                : ""
-                        }`}
-                    >
-                        <SuperDocEditor
-                            document={SAMPLE_URL}
-                            documentMode={mode}
-                            modules={MODULES}
-                            telemetry={TELEMETRY}
-                            disableContextMenu
-                            contained
-                            style={{ height: "100%" }}
-                            onReady={({
-                                superdoc,
-                            }: {
-                                superdoc: unknown;
-                            }) => {
-                                superdocRef.current = superdoc as SuperDocLike;
-                                setSuperDoc(superdoc);
-                            }}
-                        />
+                    <div className="flex h-full w-full max-w-4xl flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+                        {mode !== "viewing" && <MikeToolbar />}
+                        <div className="flex-1 overflow-hidden">
+                            <SuperDocEditor
+                                document={SAMPLE_URL}
+                                documentMode={mode}
+                                modules={MODULES}
+                                telemetry={TELEMETRY}
+                                hideToolbar
+                                disableContextMenu
+                                contained
+                                style={{ height: "100%" }}
+                                onReady={({
+                                    superdoc,
+                                }: {
+                                    superdoc: unknown;
+                                }) => {
+                                    superdocRef.current =
+                                        superdoc as SuperDocLike;
+                                    setSuperDoc(superdoc);
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
                 <SuggestionsSidebar />
