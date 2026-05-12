@@ -16,7 +16,7 @@ import type { ColumnConfig, MikeDocument, TabularCell } from "../shared/types";
 import { preprocessCitations, type ParsedCitation } from "./citation-utils";
 import { getPillClass } from "./pillUtils";
 import { DocView } from "../shared/DocView";
-import { DocxView } from "../shared/DocxView";
+import { DocxRenderer } from "../shared/DocxRenderer";
 
 function isDocxDocument(d: {
     file_type?: string | null;
@@ -168,7 +168,7 @@ export function TRSidePanel({
                         </div>
                     )}
                     {isDocxDocument(doc) && !doc.pdf_storage_path ? (
-                        <DocxView
+                        <DocxRenderer
                             documentId={doc.id}
                             quotes={[
                                 {

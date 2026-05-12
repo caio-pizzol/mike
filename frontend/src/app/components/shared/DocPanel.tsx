@@ -5,7 +5,7 @@ import { Download, Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { applyOptimisticResolution } from "../assistant/EditCard";
 import { DocView } from "./DocView";
-import { DocxView } from "./DocxView";
+import { DocxRenderer } from "./DocxRenderer";
 import {
     displayCitationQuote,
     expandCitationToEntries,
@@ -155,7 +155,7 @@ export function DocPanel({
             )}
 
             {useDocxView ? (
-                <DocxView
+                <DocxRenderer
                     documentId={documentId}
                     versionId={versionId ?? undefined}
                     quotes={quotes}

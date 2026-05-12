@@ -41,7 +41,7 @@ import type { ChatInputHandle } from "@/app/components/assistant/ChatInput";
 import { ProjectExplorer } from "@/app/components/projects/ProjectExplorer";
 import { DocView } from "@/app/components/shared/DocView";
 import { OwnerOnlyModal } from "@/app/components/shared/OwnerOnlyModal";
-import { DocxView } from "@/app/components/shared/DocxView";
+import { DocxRenderer } from "@/app/components/shared/DocxRenderer";
 import { MikeIcon } from "@/components/chat/mike-icon";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserProfile } from "@/contexts/UserProfileContext";
@@ -1055,7 +1055,7 @@ export default function ProjectAssistantChatPage({ params }: Props) {
                     <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
                         {activeTab ? (
                             isDocxTab(activeTab.filename) ? (
-                                <DocxView
+                                <DocxRenderer
                                     key={activeTab.documentId}
                                     documentId={activeTab.documentId}
                                     versionId={activeTab.versionId}

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ZoomIn, ZoomOut } from "lucide-react";
 import { MikeIcon } from "@/components/chat/mike-icon";
 import { useFetchSingleDoc } from "@/app/hooks/useFetchSingleDoc";
-import { DocxView } from "./DocxView";
+import { DocxRenderer } from "./DocxRenderer";
 import type { CitationQuote } from "./types";
 import {
     clearHighlights,
@@ -533,7 +533,7 @@ export function DocView({
 
     if (fallbackToDocx && doc?.document_id) {
         return (
-            <DocxView
+            <DocxRenderer
                 documentId={doc.document_id}
                 quotes={quotes}
             />
